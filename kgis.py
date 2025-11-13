@@ -1,0 +1,1 @@
+https://kgis.ksrsac.in/kgismaps2/rest/services/CadastralData_Admin/Cached_HissaData_Admin/Mapserver/tile/19/237321/374970

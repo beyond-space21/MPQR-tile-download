@@ -10,6 +10,7 @@ import (
 	"os"
 	"sync"
 	"time"
+	"strconv"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -34,6 +35,24 @@ var surveyBorder = "https://tngis.tnega.org/geoserver/wms?SERVICE=WMS&VERSION=1.
 
 func main() {
 	var err error
+
+	args := os.Args
+	if len(args) < 3 {
+		fmt.Println("Usage: go run main.go <start> <end>")
+		return
+	}
+
+	start, err := strconv.Atoi(args[1])
+	if err != nil {
+		fmt.Println("Error parsing start argument:", err)
+		return
+	}
+
+	end, err := strconv.Atoi(args[2])
+	if err != nil {
+		fmt.Println("Error parsing end argument:", err)
+		return
+	}
 
 	// Load the JSON data
 	data, err := os.ReadFile("batch_cords.json")
@@ -75,7 +94,7 @@ func main() {
 
 	// Processes
 	var wg sync.WaitGroup
-	for i := 1; i <= 500; i++ {
+	for i := start + 1; i <= end; i++ { // TN 5796
 		wg.Add(1)
 		go thd(&wg, i, works["b"+fmt.Sprint(i)])
 	}
